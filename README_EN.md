@@ -66,7 +66,7 @@ Skill Page → Click "Generate SKILL.md"
 
 ```
 StayWithMeForever/
-├── server.js                     # File storage API (Express, port 3001)
+├── server.cjs                    # File storage API (Express, port 3001)
 ├── src/
 │   ├── components/QuestionCard.tsx   # Multi-type question renderer
 │   ├── data/questionBank.ts          # 106 structured questions

@@ -66,7 +66,7 @@ Skill 页 → 点击"生成 SKILL.md"
 
 ```
 StayWithMeForever/
-├── server.js                     # 文件存储 API（Express，端口 3001）
+├── server.cjs                    # 文件存储 API（Express，端口 3001）
 ├── src/
 │   ├── components/QuestionCard.tsx   # 多题型渲染
 │   ├── data/questionBank.ts          # 106 道结构化问卷

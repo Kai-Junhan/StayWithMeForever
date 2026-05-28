@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuestionnaireStore } from '@/stores/questionnaireStore'
 import { storage } from '@/db/httpStorage'
@@ -50,7 +50,7 @@ export default function QuestionnairePage() {
     )
   }
 
-  const { currentQuestion, progress } = store
+  const { currentQuestion } = store
   const completionRatio = store.getCompletionRatio()
   const currentIndex = allQuestions.findIndex((q) => q.id === currentQuestion.id)
   const canGoNext = currentIndex < allQuestions.length - 1
@@ -58,7 +58,6 @@ export default function QuestionnairePage() {
   const isComplete = completionRatio >= 1 && !canGoNext
 
   const sectionQuestions = allQuestions.filter((q) => q.section === currentQuestion.section)
-  const sectionIndex = SECTION_ORDER.indexOf(currentQuestion.section)
 
   const handleAnswer = (value: string | string[]) => {
     store.answerQuestion(currentQuestion.id, value)
