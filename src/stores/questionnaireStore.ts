@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import type { Answer, Question, QuestionSection, QuestionnaireProgress } from '@/types'
 import { storage } from '@/db/httpStorage'
-import { allQuestions, getQuestionsBySection, SECTION_ORDER } from '@/data/questionBank'
+import { getAllQuestions, getQuestionsBySection, getSectionOrder } from '@/data/useQuestionBank'
 
 interface QuestionnaireState {
   progress: QuestionnaireProgress | null
@@ -44,15 +44,15 @@ export const useQuestionnaireStore = create<QuestionnaireState>((set, get) => ({
 
     const progress: QuestionnaireProgress = {
       personaVersionId,
-      currentSection: SECTION_ORDER[0],
+      currentSection: getSectionOrder()[0],
       currentQuestionIndex: 0,
       answers: [],
       startedAt: Date.now(),
-      totalQuestions: allQuestions.length,
+      totalQuestions: getAllQuestions().length,
       completedQuestions: 0,
     }
 
-    const firstQ = allQuestions[0]
+    const firstQ = getAllQuestions()[0]
     set({
       progress,
       answers: [],
@@ -100,7 +100,7 @@ export const useQuestionnaireStore = create<QuestionnaireState>((set, get) => ({
     const state = get()
     if (!state.progress || !state.currentQuestion) return
 
-    const allQs = allQuestions
+    const allQs = getAllQuestions()
     const currentIdx = allQs.findIndex((q) => q.id === state.currentQuestion!.id)
     if (currentIdx < 0 || currentIdx >= allQs.length - 1) return
 
@@ -119,7 +119,7 @@ export const useQuestionnaireStore = create<QuestionnaireState>((set, get) => ({
     const state = get()
     if (!state.progress || !state.currentQuestion) return
 
-    const allQs = allQuestions
+    const allQs = getAllQuestions()
     const currentIdx = allQs.findIndex((q) => q.id === state.currentQuestion!.id)
     if (currentIdx <= 0) return
 
@@ -140,7 +140,7 @@ export const useQuestionnaireStore = create<QuestionnaireState>((set, get) => ({
     if (sectionQuestions.length === 0) return
 
     const firstQ = sectionQuestions[0]
-    const allIdx = allQuestions.findIndex((q) => q.id === firstQ.id)
+    const allIdx = getAllQuestions().findIndex((q) => q.id === firstQ.id)
     set({
       currentQuestion: firstQ,
       progress: state.progress
@@ -161,7 +161,7 @@ export const useQuestionnaireStore = create<QuestionnaireState>((set, get) => ({
 
   getCompletionRatio: () => {
     const state = get()
-    return state.answers.length / allQuestions.length
+    return state.answers.length / getAllQuestions().length
   },
 }))
 
@@ -174,9 +174,9 @@ function getCurrentQuestion(
   const unanswered = sectionQuestions.filter((q) => !answeredIds.has(q.id))
   if (unanswered.length > 0) return unanswered[0]
 
-  const currentSectionIdx = SECTION_ORDER.indexOf(section)
-  for (let i = currentSectionIdx + 1; i < SECTION_ORDER.length; i++) {
-    const nextQs = getQuestionsBySection(SECTION_ORDER[i])
+  const currentSectionIdx = getSectionOrder().indexOf(section)
+  for (let i = currentSectionIdx + 1; i < getSectionOrder().length; i++) {
+    const nextQs = getQuestionsBySection(getSectionOrder()[i])
     const nextUnanswered = nextQs.filter((q) => !answeredIds.has(q.id))
     if (nextUnanswered.length > 0) return nextUnanswered[0]
   }

@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuestionnaireStore } from '@/stores/questionnaireStore'
 import { storage } from '@/db/httpStorage'
-import { SECTION_LABELS, SECTION_ORDER, allQuestions } from '@/data/questionBank'
+import { getAllQuestions, getQuestionsBySection, getSectionLabels, getSectionOrder } from '@/data/useQuestionBank'
 import type { Question } from '@/types'
 import QuestionCard from '@/components/QuestionCard'
 
@@ -52,12 +52,12 @@ export default function QuestionnairePage() {
 
   const { currentQuestion } = store
   const completionRatio = store.getCompletionRatio()
-  const currentIndex = allQuestions.findIndex((q) => q.id === currentQuestion.id)
-  const canGoNext = currentIndex < allQuestions.length - 1
+  const currentIndex = getAllQuestions().findIndex((q) => q.id === currentQuestion.id)
+  const canGoNext = currentIndex < getAllQuestions().length - 1
   const canGoPrev = currentIndex > 0
   const isComplete = completionRatio >= 1 && !canGoNext
 
-  const sectionQuestions = allQuestions.filter((q) => q.section === currentQuestion.section)
+  const sectionQuestions = getAllQuestions().filter((q) => q.section === currentQuestion.section)
 
   const handleAnswer = (value: string | string[]) => {
     store.answerQuestion(currentQuestion.id, value)
@@ -100,7 +100,7 @@ export default function QuestionnairePage() {
             &larr; 返回
           </button>
           <span className="text-sm text-gray-400">
-            {store.answers.length} / {allQuestions.length}
+            {store.answers.length} / {getAllQuestions().length}
           </span>
         </div>
 
@@ -112,11 +112,11 @@ export default function QuestionnairePage() {
         </div>
 
         <div className="flex gap-1 flex-wrap">
-          {SECTION_ORDER.map((section, idx) => {
-            const answered = allQuestions
+          {getSectionOrder().map((section, idx) => {
+            const answered = getAllQuestions()
               .filter((q) => q.section === section)
               .filter((q) => store.answers.some((a) => a.questionId === q.id))
-            const total = allQuestions.filter((q) => q.section === section).length
+            const total = getAllQuestions().filter((q) => q.section === section).length
             const isCurrent = section === currentQuestion.section
             return (
               <button
@@ -129,7 +129,7 @@ export default function QuestionnairePage() {
                     : 'bg-gray-100 text-gray-400'
                   }`}
               >
-                {SECTION_LABELS[section as keyof typeof SECTION_LABELS]}
+                  {getSectionLabels()[section]}
                 {answered.length > 0 && answered.length < total
                   ? ` ${answered.length}/${total}`
                   : answered.length === total
@@ -143,7 +143,7 @@ export default function QuestionnairePage() {
 
       <div className="mb-6">
         <span className="text-xs font-medium text-indigo-600 uppercase tracking-wider">
-          {SECTION_LABELS[currentQuestion.section]}
+          {getSectionLabels()[currentQuestion.section]}
           {` — 第 ${sectionQuestions.findIndex((q) => q.id === currentQuestion.id) + 1}/${sectionQuestions.length} 题`}
         </span>
       </div>
@@ -167,7 +167,7 @@ export default function QuestionnairePage() {
         </button>
 
         <button onClick={handleNext} className="btn-primary">
-          {isComplete ? '完成问卷' : '下一题 &rarr;'}
+          {isComplete ? '完成问卷' : '下一题 \u2192'}
         </button>
       </div>
 
