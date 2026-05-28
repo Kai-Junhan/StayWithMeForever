@@ -34,7 +34,7 @@ export default function HomePage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <header className="text-center mb-16">
-        <h1 className="text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
+        <h1 className="text-5xl font-extrabold text-[#4513ba] mb-6 tracking-tight">
           Stay With Me Forever
         </h1>
         <p className="text-lg text-gray-500 max-w-xl mx-auto leading-relaxed">

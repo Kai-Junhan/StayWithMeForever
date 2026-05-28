@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { usePersonaStore } from '@/stores/personaStore'
 import { storage } from '@/db/httpStorage'
@@ -10,6 +10,8 @@ export default function PersonaDetailPage() {
   const { personas, loadPersonas, renamePersona } = usePersonaStore()
   const [versions, setVersions] = useState<PersonaVersion[]>([])
   const [loading, setLoading] = useState(true)
+  const [editingVersion, setEditingVersion] = useState<{ id: string; name: string } | null>(null)
+  const editInputRef = useRef<HTMLInputElement>(null)
 
   const persona = personas.find((p) => p.id === personaId)
 
@@ -18,6 +20,13 @@ export default function PersonaDetailPage() {
       loadData()
     }
   }, [personaId])
+
+  useEffect(() => {
+    if (editingVersion) {
+      editInputRef.current?.focus()
+      editInputRef.current?.select()
+    }
+  }, [editingVersion])
 
   const loadData = async () => {
     if (!personaId) return
@@ -102,11 +111,21 @@ export default function PersonaDetailPage() {
     await renamePersona(persona.id, name.trim())
   }
 
-  const handleRenameVersion = async (versionId: string, currentName: string) => {
-    const name = window.prompt('新版本名称：', currentName)
-    if (!name?.trim()) return
-    await storage.versions.update(versionId, { name: name.trim() })
+  const handleRenameVersion = (versionId: string, currentName: string) => {
+    setEditingVersion({ id: versionId, name: currentName })
+  }
+
+  const handleSaveRename = async () => {
+    if (!editingVersion) return
+    const name = editingVersion.name.trim()
+    if (!name) return
+    await storage.versions.update(editingVersion.id, { name })
+    setEditingVersion(null)
     await loadData()
+  }
+
+  const handleCancelRename = () => {
+    setEditingVersion(null)
   }
 
   if (loading) {
@@ -175,18 +194,32 @@ export default function PersonaDetailPage() {
               <div key={version.id} className="card hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between">
                   <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-gray-900">{version.name}</h3>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleRenameVersion(version.id, version.name)
-                        }}
-                        className="text-gray-300 hover:text-gray-500 text-xs"
-                      >
-                        重命名
-                      </button>
-                    </div>
+                    {editingVersion?.id === version.id ? (
+                      <div className="flex items-center gap-2">
+                        <input
+                          ref={editInputRef}
+                          value={editingVersion.name}
+                          onChange={(e) => setEditingVersion({ ...editingVersion, name: e.target.value })}
+                          onKeyDown={(e) => { if (e.key === 'Enter') handleSaveRename(); if (e.key === 'Escape') handleCancelRename() }}
+                          className="input-field py-1 px-2 text-sm w-48"
+                        />
+                        <button onClick={handleSaveRename} className="text-xs text-green-600 hover:text-green-700">保存</button>
+                        <button onClick={handleCancelRename} className="text-xs text-gray-400 hover:text-gray-600">取消</button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold text-gray-900">{version.name}</h3>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleRenameVersion(version.id, version.name)
+                          }}
+                          className="text-gray-300 hover:text-gray-500 text-xs"
+                        >
+                          重命名
+                        </button>
+                      </div>
+                    )}
                     <p className="text-sm text-gray-400 mt-1">
                       {new Date(version.createdAt).toLocaleDateString('zh-CN')}
                       {' · '}
