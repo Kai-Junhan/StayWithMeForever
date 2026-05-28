@@ -68,17 +68,45 @@ StayWithMeForever 为此而生。
 
 ## 快速开始
 
+### 1. 下载项目
+
 ```bash
-# 1. 安装依赖
-npm install
+# 用 Git 克隆（推荐）
+git clone https://github.com/Kai-Junhan/StayWithMeForever.git
 
-# 2. 启动（同时启动本地文件 API + 前端）
-npm run dev
-
-# 3. 浏览器打开 http://localhost:3000
+# 或者：点击页面上方绿色 "Code" 按钮 → Download ZIP → 解压
 ```
 
-> 首次使用需在**设置页**填入 LLM API Key：[DeepSeek](https://platform.deepseek.com) 推荐，约 0.03 元/次。
+### 2. 确保你已安装 Node.js
+
+在终端里运行以下命令，确认 Node.js 版本 ≥ 14：
+
+```bash
+node --version
+```
+
+如果没有安装，去 [nodejs.org](https://nodejs.org) 下载 LTS 版本。
+
+### 3. 进入项目目录，安装依赖
+
+```bash
+cd StayWithMeForever
+npm install
+```
+
+### 4. 启动
+
+```bash
+npm run dev
+```
+
+这会同时启动两个服务：本地文件存储 API（端口 3001）和前端页面（端口 3000）。
+
+### 5. 打开浏览器
+
+访问 **http://localhost:3000**，你会看到首页。
+
+> 首次使用需进入**设置页**，填入 LLM API Key。[DeepSeek](https://platform.deepseek.com) 推荐，注册即送额度，生成一次 Skill 约 0.03 元。
 
 ---
 

@@ -61,17 +61,45 @@ You answer questions for 15-20 minutes. AI extracts their thought patterns. You 
 
 ## Quick Start
 
+### 1. Get the code
+
 ```bash
-# 1. Install dependencies
-npm install
+# Clone with Git (recommended)
+git clone https://github.com/Kai-Junhan/StayWithMeForever.git
 
-# 2. Start (launches local file API + frontend)
-npm run dev
-
-# 3. Open http://localhost:3000
+# Or: click the green "Code" button → Download ZIP → extract
 ```
 
-> On first use, go to **Settings** and enter your LLM API Key. [DeepSeek](https://platform.deepseek.com) recommended (~$0.005/skill).
+### 2. Make sure you have Node.js installed
+
+Run this in your terminal to check (version ≥ 14):
+
+```bash
+node --version
+```
+
+If not installed, download the LTS version from [nodejs.org](https://nodejs.org).
+
+### 3. Enter the project directory and install dependencies
+
+```bash
+cd StayWithMeForever
+npm install
+```
+
+### 4. Start the app
+
+```bash
+npm run dev
+```
+
+This launches two local services: the file storage API (port 3001) and the frontend (port 3000).
+
+### 5. Open your browser
+
+Go to **http://localhost:3000** — you'll see the homepage.
+
+> On first use, go to **Settings** and enter your LLM API Key. [DeepSeek](https://platform.deepseek.com) is recommended — free credits on signup, ~$0.005 per skill generation.
 
 ---
 
