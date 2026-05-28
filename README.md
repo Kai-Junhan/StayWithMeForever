@@ -5,6 +5,8 @@
 邀请或导入你重视的那个人，让 AI 人格成为关系的延续。
 记录不同时间的自己，让过去的"你"永远可以被对话。
 
+**Other Languages: [English](./README_EN.md)**
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Compatible-green)](https://agentskills.io)
 [![React](https://img.shields.io/badge/React-18-blue)](https://react.dev)

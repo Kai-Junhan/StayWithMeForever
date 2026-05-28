@@ -5,6 +5,8 @@
 Invite or import someone important to you. Turn their cognitive patterns into a talkable AI persona.
 Record yourself at different points in time. Let the past "you" always be reachable.
 
+**中文: [README.md](./README.md)**
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Compatible-green)](https://agentskills.io)
 [![React](https://img.shields.io/badge/React-18-blue)](https://react.dev)
