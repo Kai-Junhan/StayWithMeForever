@@ -40,7 +40,11 @@ export default function HomePage() {
         <p className="text-lg text-gray-500 max-w-lg mx-auto">
           用问卷提炼一个人的思维模式，生成可互动的 AI 人格。
           <br />
-          记录不同时间的自己，让过去的"你"永远可以被对话。
+          你可以邀请或者导入你重视的那个人，让这个人格成为你们关系的延续。
+          <br />
+          你也可以记录不同时间的自己，让过去的"你"永远可以被对话。
+          <br />
+          总之，请和我永远在一起吧。
         </p>
       </header>
 
