@@ -97,9 +97,16 @@ export default function PersonaDetailPage() {
 
   const handleRename = async () => {
     if (!persona) return
-    const name = prompt('新名称：', persona.name)
+    const name = window.prompt('新名称：', persona.name)
     if (!name?.trim()) return
     await renamePersona(persona.id, name.trim())
+  }
+
+  const handleRenameVersion = async (versionId: string, currentName: string) => {
+    const name = window.prompt('新版本名称：', currentName)
+    if (!name?.trim()) return
+    await storage.versions.update(versionId, { name: name.trim() })
+    await loadData()
   }
 
   if (loading) {
@@ -168,7 +175,18 @@ export default function PersonaDetailPage() {
               <div key={version.id} className="card hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="font-semibold text-gray-900">{version.name}</h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold text-gray-900">{version.name}</h3>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleRenameVersion(version.id, version.name)
+                        }}
+                        className="text-gray-300 hover:text-gray-500 text-xs"
+                      >
+                        重命名
+                      </button>
+                    </div>
                     <p className="text-sm text-gray-400 mt-1">
                       {new Date(version.createdAt).toLocaleDateString('zh-CN')}
                       {' · '}

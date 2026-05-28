@@ -34,10 +34,8 @@ export default function HomePage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <header className="text-center mb-16">
-        <h1 className="text-5xl font-extrabold mb-6 tracking-tight">
-          <span className="bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            Stay With Me Forever
-          </span>
+        <h1 className="text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
+          Stay With Me Forever
         </h1>
         <p className="text-lg text-gray-500 max-w-xl mx-auto leading-relaxed">
           用问卷提炼一个人的思维模式，生成可互动的 AI 人格。
@@ -123,7 +121,7 @@ export default function HomePage() {
                 </div>
                 <div className="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between">
                   <span className="text-xs text-gray-400 group-hover:text-indigo-500 transition-colors">
-                    查看详情 \u2192
+                    查看详情 →
                   </span>
                   <button
                     onClick={(e) => {
