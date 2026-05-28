@@ -26,7 +26,7 @@ export default function QuestionnairePage() {
     autoSaveTimer.current = setTimeout(async () => {
       await store.saveProgress()
       if (versionId) {
-        await storage.personaVersions.update(versionId, { answers: store.answers })
+        await storage.versions.update(versionId, { answers: store.answers })
       }
     }, 500)
   }, [store.answers, versionId])
@@ -81,7 +81,7 @@ export default function QuestionnairePage() {
   const handleSubmit = async () => {
     await store.saveProgress()
     if (versionId) {
-      await storage.personaVersions.update(versionId, { answers: store.answers })
+      await storage.versions.update(versionId, { answers: store.answers })
     }
     navigate(`/skill/${versionId}`)
   }
@@ -123,13 +123,12 @@ export default function QuestionnairePage() {
               <button
                 key={section}
                 onClick={() => handleJumpToSection(section)}
-                className={`text-xs px-2 py-1 rounded transition-colors ${
-                  isCurrent
-                    ? 'bg-indigo-100 text-indigo-700 font-medium'
-                    : answered.length === total
-                      ? 'bg-green-50 text-green-600'
-                      : 'bg-gray-100 text-gray-400'
-                }`}
+                className={`text-xs px-2 py-1 rounded transition-colors ${isCurrent
+                  ? 'bg-indigo-100 text-indigo-700 font-medium'
+                  : answered.length === total
+                    ? 'bg-green-50 text-green-600'
+                    : 'bg-gray-100 text-gray-400'
+                  }`}
               >
                 {SECTION_LABELS[section as keyof typeof SECTION_LABELS]}
                 {answered.length > 0 && answered.length < total
@@ -160,11 +159,10 @@ export default function QuestionnairePage() {
         <button
           onClick={handlePrev}
           disabled={!canGoPrev}
-          className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-            canGoPrev
-              ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              : 'text-gray-300 cursor-not-allowed'
-          }`}
+          className={`px-6 py-3 rounded-lg font-medium transition-colors ${canGoPrev
+            ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+            : 'text-gray-300 cursor-not-allowed'
+            }`}
         >
           &larr; 上一题
         </button>

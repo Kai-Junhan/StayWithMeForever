@@ -20,7 +20,7 @@ export default function SettingsPage() {
 
   useEffect(() => {
     load()
-  }, [load])
+  }, [])
 
   const handleTest = async () => {
     setTestResult('testing')
@@ -50,11 +50,10 @@ export default function SettingsPage() {
                 <button
                   key={p.id}
                   onClick={() => setProvider(p.id)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    config.provider === p.id
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${config.provider === p.id
                       ? 'bg-indigo-600 text-white'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
+                    }`}
                 >
                   {p.name}
                 </button>

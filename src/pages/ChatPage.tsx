@@ -39,7 +39,7 @@ export default function ChatPage() {
   }
 
   const handleSend = async () => {
-    if (!input.trim() || chatStore.streaming) return
+    if (!input.trim() || chatStore.thinking) return
     if (!isConfigured) { alert('请先在设置中配置 API Key'); navigate('/settings'); return }
     if (!chatStore.currentSession) {
       if (!versionId) return
@@ -93,17 +93,15 @@ export default function ChatPage() {
           <div className="mb-4 flex gap-2 overflow-x-auto pb-2">
             {chatStore.sessions.map((s) => (
               <button key={s.id} onClick={() => chatStore.selectSession(s)}
-                className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors ${
-                  s.id === chatStore.currentSession?.id ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                }`}>{s.title.slice(0, 20)}</button>
+                className={`text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors ${s.id === chatStore.currentSession?.id ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                  }`}>{s.title.slice(0, 20)}</button>
             ))}
           </div>
         )}
         {chatStore.messages.filter((m) => m.role !== 'system').map((msg) => (
           <div key={msg.id} className={`mb-6 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[75%] rounded-2xl px-4 py-3 ${
-              msg.role === 'user' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-800 shadow-sm'
-            }`}>
+            <div className={`max-w-[75%] rounded-2xl px-4 py-3 ${msg.role === 'user' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-800 shadow-sm'
+              }`}>
               <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
               <p className={`text-xs mt-1 ${msg.role === 'user' ? 'text-indigo-200' : 'text-gray-300'}`}>
                 {new Date(msg.timestamp).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
@@ -111,13 +109,16 @@ export default function ChatPage() {
             </div>
           </div>
         ))}
-        {chatStore.streaming && (
+        {chatStore.thinking && (
           <div className="flex justify-start mb-6">
             <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3 shadow-sm">
-              <div className="flex gap-1">
-                <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: '0ms' }} />
-                <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: '150ms' }} />
-                <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: '300ms' }} />
+              <div className="flex items-center gap-2">
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+                <span className="text-sm text-gray-400">思考中...</span>
               </div>
             </div>
           </div>
@@ -128,9 +129,9 @@ export default function ChatPage() {
       <div className="border-t border-gray-200 bg-white px-4 py-3">
         <div className="flex items-center gap-3">
           <input ref={inputRef} type="text" value={input} onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown} placeholder="输入消息..." disabled={chatStore.streaming}
+            onKeyDown={handleKeyDown} placeholder="输入消息..." disabled={chatStore.thinking}
             className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm disabled:opacity-50" autoFocus />
-          <button onClick={handleSend} disabled={!input.trim() || chatStore.streaming || !isConfigured}
+          <button onClick={handleSend} disabled={!input.trim() || chatStore.thinking || !isConfigured}
             className="w-10 h-10 flex items-center justify-center bg-indigo-600 text-white rounded-full hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-shrink-0">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

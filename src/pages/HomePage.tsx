@@ -11,7 +11,7 @@ export default function HomePage() {
   useEffect(() => {
     loadPersonas()
     loadSettings()
-  }, [loadPersonas, loadSettings])
+  }, [])
 
   const handleCreate = async () => {
     const name = prompt('请输入这个人的名字（或昵称）：')

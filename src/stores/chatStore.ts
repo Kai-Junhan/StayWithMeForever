@@ -8,7 +8,7 @@ interface ChatState {
   currentSession: ChatSession | null
   messages: ChatMessage[]
   loading: boolean
-  streaming: boolean
+  thinking: boolean
   systemPrompt: string
 
   setSystemPrompt: (prompt: string) => void
@@ -24,7 +24,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   currentSession: null,
   messages: [],
   loading: false,
-  streaming: false,
+  thinking: false,
   systemPrompt: '',
 
   setSystemPrompt: (prompt) => set({ systemPrompt: prompt }),
@@ -78,7 +78,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     }
     await storage.messages.create(state.currentSession.id, userMsg)
     const updatedMessages = [...state.messages, userMsg]
-    set({ messages: updatedMessages, streaming: true })
+    set({ messages: updatedMessages, thinking: true })
 
     try {
       const llmConfig = getLLMConfig()
@@ -100,7 +100,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
       set((s) => ({
         messages: [...s.messages, assistantMsg],
-        streaming: false,
+        thinking: false,
       }))
     } catch (err: unknown) {
       const errorMsg: ChatMessage = {
@@ -111,7 +111,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
         timestamp: Date.now(),
       }
       await storage.messages.create(state.currentSession.id, errorMsg)
-      set((s) => ({ messages: [...s.messages, errorMsg], streaming: false }))
+      set((s) => ({ messages: [...s.messages, errorMsg], thinking: false }))
     }
   },
 }))

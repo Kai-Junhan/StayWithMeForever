@@ -57,6 +57,25 @@ function buildPrompt(systemPrompt: string, userPrompt: string): string {
   return `${systemPrompt}\n\nUser: ${userPrompt}\n\nAssistant:`
 }
 
+function createAbortSignal(request: LLMCompletionRequest): AbortSignal | undefined {
+  const timeoutMs = request.timeoutMs ?? 120000
+  const timeoutSignal = AbortSignal.timeout(timeoutMs)
+  if (request.signal) {
+    const combined = new AbortController()
+    const onAbort = () => combined.abort((request.signal as AbortSignal).reason)
+    request.signal.addEventListener('abort', onAbort)
+    timeoutSignal.addEventListener('abort', () => combined.abort(timeoutSignal.reason))
+    if (request.signal.aborted) combined.abort(request.signal.reason)
+    if (timeoutSignal.aborted) combined.abort(timeoutSignal.reason)
+    return combined.signal
+  }
+  return timeoutSignal
+}
+
+export function isAbortError(err: unknown): boolean {
+  return err instanceof DOMException && err.name === 'AbortError'
+}
+
 export async function completion(
   request: LLMCompletionRequest,
   config?: LLMConfig,
@@ -69,21 +88,24 @@ export async function completion(
     )
   }
 
+  const signal = createAbortSignal(request)
+
   switch (llmConfig.provider) {
     case 'deepseek':
-      return deepseekCompletion(request, llmConfig)
+      return deepseekCompletion(request, llmConfig, signal)
     case 'openai':
-      return openaiCompletion(request, llmConfig)
+      return openaiCompletion(request, llmConfig, signal)
     case 'anthropic':
-      return anthropicCompletion(request, llmConfig)
+      return anthropicCompletion(request, llmConfig, signal)
     case 'ollama':
-      return ollamaCompletion(request, llmConfig)
+      return ollamaCompletion(request, llmConfig, signal)
   }
 }
 
 async function deepseekCompletion(
   request: LLMCompletionRequest,
   config: LLMConfig,
+  signal?: AbortSignal,
 ): Promise<LLMCompletionResponse> {
   const baseUrl = config.baseUrl || DEFAULT_BASE_URLS.deepseek
   const body = {
@@ -103,6 +125,7 @@ async function deepseekCompletion(
       Authorization: `Bearer ${config.apiKey}`,
     },
     body: JSON.stringify(body),
+    signal,
   })
 
   if (!response.ok) {
@@ -124,6 +147,7 @@ async function deepseekCompletion(
 async function openaiCompletion(
   request: LLMCompletionRequest,
   config: LLMConfig,
+  signal?: AbortSignal,
 ): Promise<LLMCompletionResponse> {
   const baseUrl = config.baseUrl || DEFAULT_BASE_URLS.openai
   const body = {
@@ -143,6 +167,7 @@ async function openaiCompletion(
       Authorization: `Bearer ${config.apiKey}`,
     },
     body: JSON.stringify(body),
+    signal,
   })
 
   if (!response.ok) {
@@ -164,6 +189,7 @@ async function openaiCompletion(
 async function anthropicCompletion(
   request: LLMCompletionRequest,
   config: LLMConfig,
+  signal?: AbortSignal,
 ): Promise<LLMCompletionResponse> {
   const baseUrl = config.baseUrl || DEFAULT_BASE_URLS.anthropic
   const body = {
@@ -181,6 +207,7 @@ async function anthropicCompletion(
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify(body),
+    signal,
   })
 
   if (!response.ok) {
@@ -202,6 +229,7 @@ async function anthropicCompletion(
 async function ollamaCompletion(
   request: LLMCompletionRequest,
   config: LLMConfig,
+  signal?: AbortSignal,
 ): Promise<LLMCompletionResponse> {
   const baseUrl = config.baseUrl || DEFAULT_BASE_URLS.ollama
   const body = {
@@ -217,6 +245,7 @@ async function ollamaCompletion(
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
+    signal,
   })
 
   if (!response.ok) {

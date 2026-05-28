@@ -138,6 +138,8 @@ export interface LLMCompletionRequest {
   userPrompt: string
   temperature?: number
   maxTokens?: number
+  signal?: AbortSignal
+  timeoutMs?: number
 }
 
 export interface LLMCompletionResponse {

@@ -127,7 +127,6 @@ app.get('/api/personas/:personaId/versions', (req, res) => {
 })
 
 app.get('/api/versions/:id', (req, res) => {
-  const file = path.join(DATA_DIR, 'versions', '**', `${req.params.id}.json`)
   const allVers = listAllVersions()
   const v = allVers.find(v => v.id === req.params.id)
   if (!v) return res.status(404).json({ error: 'Not found' })
