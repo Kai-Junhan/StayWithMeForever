@@ -13,12 +13,13 @@ const MBTI_OPTIONS = [
   { id: 'ESTJ', label: 'ESTJ - 总经理' }, { id: 'ESFJ', label: 'ESFJ - 执政官' },
   { id: 'ISTP', label: 'ISTP - 鉴赏家' }, { id: 'ISFP', label: 'ISFP - 探险家' },
   { id: 'ESTP', label: 'ESTP - 企业家' }, { id: 'ESFP', label: 'ESFP - 表演者' },
+  { id: 'UNKNOWN', label: '不清楚' },
 ]
 
 const AGE_OPTIONS = [
   { id: '18-24', label: '18-24 岁' }, { id: '25-34', label: '25-34 岁' },
   { id: '35-44', label: '35-44 岁' }, { id: '45-54', label: '45-54 岁' },
-  { id: '55+', label: '55 岁以上' },
+  { id: '55+', label: '55 岁以上' }, { id: 'CUSTOM', label: '自定义' },
 ]
 
 const OCCUPATION_OPTIONS = [
@@ -26,6 +27,7 @@ const OCCUPATION_OPTIONS = [
   { id: 'BUSINESS', label: '商业 / 管理 / 创业' }, { id: 'EDUCATION', label: '教育 / 研究' },
   { id: 'MEDICAL', label: '医疗 / 健康' }, { id: 'FINANCE', label: '金融 / 咨询' },
   { id: 'MEDIA', label: '媒体 / 内容创作' }, { id: 'STUDENT', label: '学生' },
+  { id: 'OTHER', label: '其他 / 自定义' },
 ]
 
 export default function CreatePage() {
@@ -34,7 +36,9 @@ export default function CreatePage() {
   const [name, setName] = useState('')
   const [mbti, setMbti] = useState('')
   const [age, setAge] = useState('')
+  const [customAge, setCustomAge] = useState('')
   const [occupation, setOccupation] = useState('')
+  const [customOccupation, setCustomOccupation] = useState('')
   const [creating, setCreating] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -52,16 +56,16 @@ export default function CreatePage() {
         createdAt: Date.now(),
         baseProfile: {
           name: name.trim(),
-          mbti: mbti || undefined,
-          ageRange: age || undefined,
-          occupation: occupation || undefined,
+          mbti: mbti === 'UNKNOWN' ? undefined : (mbti || undefined),
+          ageRange: age === 'CUSTOM' ? `${customAge} 岁` : (age || undefined),
+          occupation: occupation === 'OTHER' ? customOccupation : (occupation || undefined),
           createdAt: Date.now(),
         } as BaseProfile,
         answers: [
           { questionId: 'P0-001', section: 'P0-basic', type: 'info', value: name.trim(), timestamp: Date.now() },
-          ...(mbti ? [{ questionId: 'P0-002', section: 'P0-basic' as const, type: 'single-choice' as const, value: mbti, timestamp: Date.now() }] : []),
-          ...(age ? [{ questionId: 'P0-003', section: 'P0-basic' as const, type: 'single-choice' as const, value: age, timestamp: Date.now() }] : []),
-          ...(occupation ? [{ questionId: 'P0-004', section: 'P0-basic' as const, type: 'single-choice' as const, value: occupation, timestamp: Date.now() }] : []),
+          ...(mbti && mbti !== 'UNKNOWN' ? [{ questionId: 'P0-002', section: 'P0-basic' as const, type: 'single-choice' as const, value: mbti, timestamp: Date.now() }] : []),
+          ...(age ? [{ questionId: 'P0-003', section: 'P0-basic' as const, type: 'single-choice' as const, value: age === 'CUSTOM' ? `${customAge} 岁` : age, timestamp: Date.now() }] : []),
+          ...(occupation ? [{ questionId: 'P0-004', section: 'P0-basic' as const, type: 'single-choice' as const, value: occupation === 'OTHER' ? customOccupation : occupation, timestamp: Date.now() }] : []),
         ],
         personalityTraits: [],
         cognitiveProfile: { decisionStyle: '', informationProcessing: '', problemSolving: '', riskAttitude: '', scores: {} },
@@ -139,7 +143,7 @@ export default function CreatePage() {
               <button
                 key={opt.id}
                 type="button"
-                onClick={() => setAge(age === opt.id ? '' : opt.id)}
+                onClick={() => { setAge(age === opt.id ? '' : opt.id); if (opt.id !== 'CUSTOM') setCustomAge('') }}
                 className={`px-4 py-2 rounded-lg border text-sm transition-colors ${
                   age === opt.id
                     ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
@@ -150,6 +154,18 @@ export default function CreatePage() {
               </button>
             ))}
           </div>
+          {age === 'CUSTOM' && (
+            <input
+              type="number"
+              min="1"
+              max="150"
+              value={customAge}
+              onChange={(e) => setCustomAge(e.target.value)}
+              placeholder="输入年龄"
+              className="input-field mt-2"
+              autoFocus
+            />
+          )}
         </div>
 
         <div>
@@ -159,7 +175,7 @@ export default function CreatePage() {
               <button
                 key={opt.id}
                 type="button"
-                onClick={() => setOccupation(occupation === opt.id ? '' : opt.id)}
+                onClick={() => { setOccupation(occupation === opt.id ? '' : opt.id); if (opt.id !== 'OTHER') setCustomOccupation('') }}
                 className={`px-4 py-2 rounded-lg border text-sm transition-colors text-left ${
                   occupation === opt.id
                     ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
@@ -170,6 +186,16 @@ export default function CreatePage() {
               </button>
             ))}
           </div>
+          {occupation === 'OTHER' && (
+            <input
+              type="text"
+              value={customOccupation}
+              onChange={(e) => setCustomOccupation(e.target.value)}
+              placeholder="输入职业"
+              className="input-field mt-2"
+              autoFocus
+            />
+          )}
         </div>
 
         <div className="pt-4">
