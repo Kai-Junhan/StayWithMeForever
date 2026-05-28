@@ -1,20 +1,61 @@
 # StayWithMeForever
 
-> **Turn the people around you into talkable AI personas.**
->
-> Through 100+ carefully designed behavioral scenario questions, distill a person's cognitive patterns, values, and expression DNA.
-> Generate an [Agent Skills protocol](https://github.com/alchaincyf/nuwa-skill) compliant `SKILL.md`,
-> run it as a thinking advisor in Claude Code / Cursor / OpenCode, or chat directly in the browser.
+> *"Stay with me, forever."*
+
+Invite or import someone important to you. Turn their cognitive patterns into a talkable AI persona.
+Record yourself at different points in time. Let the past "you" always be reachable.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Compatible-green)](https://agentskills.io)
+[![React](https://img.shields.io/badge/React-18-blue)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org)
+
+---
+
+## Example
+
+```
+You             ❯ My best friend just went through a breakup. I don't know how to comfort her.
+
+AI Persona      ❯ I'm really sad to hear that.
+                  There's no right or wrong in relationships,
+                  but I know nothing I say right now will make it hurt less.
+                  If you want to talk or just need someone around in silence, I'm here.
+                  Don't rush yourself. Take as long as you need.
+```
+
+This isn't AI reciting a generic answer. It's **the cognitive patterns and expression style of a specific person, extracted from 100+ behavioral scenario questions.**
+
+---
+
+## Why StayWithMeForever
+
+[colleague-skill](https://github.com/titanwings/colleague-skill) proved that distilling a person is viable.
+[Nuwa](https://github.com/alchaincyf/nuwa-skill) pushed it further — extracting the cognitive operating systems of Jobs, Munger, and Musk from public data.
+
+But one question remained unanswered:
+
+> **The person you want to distill doesn't leave tens of thousands of words online.**
+> No podcasts. No Twitter threads. No biographies.
+> They're just someone important to you —
+> or a version of yourself from another time.
+
+StayWithMeForever was built for exactly this.
+
+**Collect first-hand cognitive data through structured questionnaires** — no public data needed, no agent crawling.
+You answer questions for 15-20 minutes. AI extracts their thought patterns. You get a talkable digital persona.
+
+---
 
 ## Core Features
 
-- **Local file storage** — All data saved as JSON files in the project `data/` directory; copy the folder to take everything
-- **Pure frontend + lightweight backend** — React + Express, no cloud server needed, two commands to run locally
-- **Multi-version timeline** — Record "me before graduation" vs "me three years later" for the same person
-- **Standard Skill output** — Reuses [nuwa-skill](https://github.com/alchaincyf/nuwa-skill) SKILL.md template; drop-in usable AI persona
-- **Built-in chat** — Talk to the generated AI persona directly in the browser, no external Agent Runtime required
-- **Multi-LLM support** — DeepSeek (default) | OpenAI | Anthropic | Ollama (local)
-- **Auto-save** — Questionnaire progress auto-saves every 500ms; never lose answers on page close
+- **Local file storage** — Data stored as JSON files in the project's `data/` directory. Copy the folder to take everything.
+- **Absolute privacy** — Pure frontend + lightweight local API. Data never leaves your machine.
+- **Multi-version timeline** — Record "me before graduation" vs "me three years later". Compare across time.
+- **Standard Skill output** — Agent Skills protocol compliant SKILL.md. Import into Cursor / Claude Code / OpenCode.
+- **Built-in chat** — Talk to generated AI personas directly in your browser.
+- **Import Skill** — Import existing SKILL.md files that follow the protocol. No questionnaire needed.
+- **Multi-LLM** — DeepSeek (default) | OpenAI | Anthropic | Ollama (local)
 
 ---
 
@@ -24,41 +65,58 @@
 # 1. Install dependencies
 npm install
 
-# 2. Start (launches file storage API + frontend dev server)
+# 2. Start (launches local file API + frontend)
 npm run dev
 
 # 3. Open http://localhost:3000
 ```
 
-> On first use, go to **Settings** and enter your LLM API Key ([DeepSeek](https://platform.deepseek.com) recommended).
+> On first use, go to **Settings** and enter your LLM API Key. [DeepSeek](https://platform.deepseek.com) recommended (~$0.005/skill).
 
 ---
 
 ## Workflow
 
 ```
-Settings → Enter API Key → Test Connection
+Configure API Key → Test Connection
  │
- ▼
-Home → + Distill a Person → Enter name
+ ├── + Distill a Person → Fill basic info → Start questionnaire
+ │         ├── Full (106 questions, 15-20 min)
+ │         └── Mini (~20 questions, 3-5 min)
  │
- ▼
-Questionnaire → 106 questions (multiple-choice + open-ended, ~15-20 min)
-                      ├── P0 Basic Profile (10)
-                      ├── P1 Cognitive Patterns (25)
-                      ├── P2 Values (20)
-                      ├── P3 Expression & Emotion (25)
-                      ├── P4 Social & Relationships (20)
-                      └── P5 Free Expression (6)
+ ├── Import Skill → Select .md file → Auto-validate → Ready to use
  │
- ▼
-Skill Page → Click "Generate SKILL.md"
-                → Two-stage LLM analysis → Standard Skill output
- │
- ├── Download SKILL.md → Import into Cursor / Claude Code
- │
- └── Start Chat → Talk to AI persona in the browser
+ └── Existing personas → View versions → Generate Skill → Chat / Download
 ```
+
+---
+
+## Five-Layer Persona Model
+
+SWMF extracts more than surface habits through questionnaires — it extracts the **cognitive operating system**.
+
+| Layer | Description |
+|-------|-------------|
+| **How they speak** | Expression DNA — sentence style, rhythm, humor, emotional expression |
+| **How they think** | Mental models, cognitive frameworks |
+| **How they decide** | Decision heuristics, value priorities |
+| **What they don't do** | Anti-patterns, ethical boundaries |
+| **What they can't do** | Honest boundaries — every Skill states its limitations |
+
+**Work habits can be mimicked through conversation. But what makes Munger and Musk reach different conclusions from the same question is cognitive framework.**
+
+---
+
+## Questionnaire Philosophy
+
+100+ questions aren't random. Each serves a design purpose:
+
+- **Behavioral projection** — Ask "At parties, you usually..." not "Are you extroverted?"
+- **Scenario-driven** — Every question embedded in a concrete context
+- **Anti-social-desirability** — Every option has a reasonable motivation; no "correct" answer
+- **Open-ended is key** — 6 free-text questions provide raw material for expression DNA
+
+Modules: `P0 Basic Profile` → `P1 Cognitive Patterns` → `P2 Values` → `P3 Expression & Emotion` → `P4 Social & Relationships` → `P5 Free Expression`
 
 ---
 
@@ -66,47 +124,49 @@ Skill Page → Click "Generate SKILL.md"
 
 ```
 StayWithMeForever/
-├── server.cjs                    # File storage API (Express, port 3001)
+├── server.cjs                    # Local file storage API (Express)
 ├── src/
-│   ├── components/QuestionCard.tsx   # Multi-type question renderer
-│   ├── data/questionBank.ts          # 106 structured questions
-│   ├── db/httpStorage.ts             # Frontend storage client
+│   ├── components/
+│   │   ├── QuestionCard.tsx      # Multi-type question renderer
+│   │   └── ImportSkillModal.tsx  # SKILL.md import parser
+│   ├── data/
+│   │   ├── questionBank.ts       # Full bank (106 questions)
+│   │   ├── questionBankMini.ts   # Mini bank (~20 questions)
+│   │   ├── useQuestionBank.ts    # Dynamic bank selector
+│   │   └── mockData.ts           # Dev test data
+│   ├── db/httpStorage.ts         # Local file storage client
 │   ├── llm/
-│   │   ├── adapter.ts                # LLM adapter (4 providers)
-│   │   └── prompts.ts                # Two-stage prompt templates
-│   ├── pages/                        # Page components
-│   │   ├── HomePage.tsx              # Persona list
-│   │   ├── QuestionnairePage.tsx     # Question flow
-│   │   ├── PersonaDetailPage.tsx     # Version management
-│   │   ├── SkillEditorPage.tsx       # Skill generation/preview/download
-│   │   ├── ChatPage.tsx              # Built-in chat
-│   │   └── SettingsPage.tsx          # LLM settings
-│   ├── stores/                       # Zustand state management
-│   ├── types/index.ts                # Full TypeScript types
-│   └── utils/export.ts               # SKILL.md export utility
-├── docs/
-│   ├── PLAN.md                       # Project planning overview
-│   ├── ARCHITECTURE.md               # Architecture docs
-│   ├── QUESTIONNAIRE.md              # Question design principles
-│   └── PROMPT_DESIGN.md              # Prompt design
-├── data/                             # User data (local file storage)
-├── package.json
-├── tailwind.config.js
-├── vite.config.ts
-└── .gitignore
+│   │   ├── adapter.ts            # LLM adapter (DeepSeek/OpenAI/Anthropic/Ollama)
+│   │   └── prompts.ts            # Two-stage prompts (analysis + generation)
+│   ├── pages/
+│   │   ├── HomePage.tsx          # Home
+│   │   ├── CreatePage.tsx        # Create persona (form UI)
+│   │   ├── QuestionnairePage.tsx # Questionnaire flow
+│   │   ├── PersonaDetailPage.tsx # Persona detail + version management
+│   │   ├── SkillEditorPage.tsx   # Skill generation/preview/download
+│   │   ├── ChatPage.tsx          # Built-in chat
+│   │   └── SettingsPage.tsx      # LLM configuration
+│   ├── stores/                   # Zustand state management
+│   ├── types/index.ts            # TypeScript type definitions
+│   └── utils/export.ts           # SKILL.md export
+├── docs/                         # Design documentation
+├── data/                         # User data directory (local file storage)
+└── README.md
 ```
 
 ---
 
-## Commands
+## Relationship with nuwa-skill
 
-| Command | Description |
-|---------|-------------|
-| `npm install` | Install dependencies |
-| `npm run dev` | Start dev environment (API + frontend) |
-| `npm run dev:api` | Start file storage API only (port 3001) |
-| `npm run dev:web` | Start frontend only (port 3000) |
-| `npm run build` | Production build → `dist/` |
+| Dimension | nuwa-skill | StayWithMeForever |
+|-----------|------------|-------------------|
+| **Subject** | Public figures (Jobs/Munger/Musk) | People around you (friends/partner/yourself) |
+| **Data source** | Public web materials (Agent search) | **First-hand questionnaire data** |
+| **Collection** | 6 Agents parallel search | Structured questionnaire (15-20 min) |
+| **Advantage** | Deep cognitive architecture of famous minds | Private emotional/relational/expression patterns |
+| **Skill format** | Agent Skills protocol SKILL.md | **Fully compatible** |
+
+> Nuwa distills how famous minds think. SWMF distills how people around you think.
 
 ---
 
@@ -118,63 +178,36 @@ StayWithMeForever/
 | Build Tool | Vite 4 |
 | Styling | Tailwind CSS 3 |
 | State Management | Zustand 4 |
-| Backend | Express 4 (local file API) |
+| Backend (local) | Express 4 |
 | LLM | DeepSeek / OpenAI / Anthropic / Ollama |
-
----
-
-## Comparison with nuwa-skill
-
-| Dimension | nuwa-skill | StayWithMeForever |
-|-----------|------------|-------------------|
-| Subject | Public figures (Jobs/Munger/Musk) | People around you (friends/partner/yourself) |
-| Data source | Public web materials (Agent swarm) | First-hand questionnaire data |
-| Collection | 6 Agents parallel search | User answers (15-20 min) |
-| Advantage | Extract deep cognitive architecture of famous minds | Extract private emotional/relational/expression patterns |
-| Skill format | Agent Skills protocol SKILL.md | **Fully compatible** |
-| Storage | File system | Project `data/` folder |
-
----
-
-## Design Philosophy
-
-### Five-Layer Persona Model
-
-1. **Trait Layer** — MBTI / Big Five self-assessment, behavioral tendencies
-2. **Cognitive Layer** — Decision style, information processing, problem solving
-3. **Value Layer** — Priority ranking, moral dilemmas, meaning of life
-4. **Expression DNA** — Sentence style, humor, emotional expression, certainty
-5. **Relationship Layer** — Behavioral patterns with friends/lovers/family
-
-### Question Design Principles
-
-- **Behavioral projection** — Ask "At parties, you usually..." not "Are you extroverted?"
-- **Scenario-driven** — Every question embedded in a concrete context
-- **Anti-social-desirability** — Every option has a reasonable motivation
-- **Open-ended is key** — 6 free-text questions directly provide "expression DNA" raw material
+| Data Storage | JSON files (`data/` directory) |
 
 ---
 
 ## FAQ
 
-**Q: Where is the data stored? Will it be lost on refresh?**
-A: All data is stored as JSON files in the project's `data/` directory. It survives refreshes, shutdowns, and reboots. Copy the project folder to take all your data with you.
+**Q: Where is data stored? Will I lose it on refresh?**
+A: All data lives as JSON files in the project's `data/` directory. Survives refreshes, shutdowns, and reboots. Copy the project folder to take everything with you.
 
 **Q: Do I need a server?**
-A: No cloud server needed. `npm run dev` starts two local services (Express API on port 3001 + Vite frontend on port 3000), both running on your machine.
+A: No. `npm run dev` starts a local Express API (port 3001) + Vite frontend (port 3000), both on your machine.
 
 **Q: Is my API Key secure?**
-A: The API Key is stored only in your browser's localStorage and sent directly from your browser to the LLM provider. It never passes through any intermediary server.
+A: Stored only in browser `localStorage`. Sent directly from your browser to the LLM provider. No intermediary servers.
 
-**Q: How much does it cost to generate a Skill?**
-A: DeepSeek ~$0.005/skill; GPT-4o ~$0.07/skill. Two-stage generation uses approximately 4K-8K tokens.
+**Q: How much does generating a Skill cost?**
+A: DeepSeek ~$0.005/skill. Two-stage generation uses ~4K-8K tokens.
+
+**Q: Can I import Skills created by others?**
+A: Yes. Import any SKILL.md file compliant with the Agent Skills protocol. Auto-validated on import.
 
 ---
 
 ## License
 
-MIT
+MIT — use it, modify it, build with it.
 
 ---
 
-> Inspired by [nuwa-skill](https://github.com/alchaincyf/nuwa-skill) — Nuwa distills how famous minds think. SWMF distills how people around you think.
+> *Nuwa distills **what** people do. SWMF distills **how** people think.*
+> *The next person you want to distill doesn't have to be famous.*
