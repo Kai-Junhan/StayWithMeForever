@@ -209,5 +209,5 @@ MIT — use it, modify it, build with it.
 
 ---
 
-> *Nuwa distills **what** people do. SWMF distills **how** people think.*
+> *Nuwa distills **how** famous minds think. SWMF distills **how** people around you think.*
 > *The next person you want to distill doesn't have to be famous.*
