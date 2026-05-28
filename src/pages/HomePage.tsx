@@ -4,12 +4,14 @@ import { usePersonaStore } from '@/stores/personaStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { storage } from '@/db/httpStorage'
 import { createMockPersonaVersion } from '@/data/mockData'
+import ImportSkillModal from '@/components/ImportSkillModal'
 
 export default function HomePage() {
   const { personas, loading, loadPersonas, createPersona, deletePersona } = usePersonaStore()
   const { load: loadSettings } = useSettingsStore()
   const navigate = useNavigate()
   const [useMini, setUseMini] = useState(() => localStorage.getItem('swmf-question-mode') === 'mini')
+  const [showImport, setShowImport] = useState(false)
 
   useEffect(() => {
     loadPersonas()
@@ -20,13 +22,6 @@ export default function HomePage() {
     const next = !useMini
     setUseMini(next)
     localStorage.setItem('swmf-question-mode', next ? 'mini' : 'full')
-  }
-
-  const handleCreate = async () => {
-    const name = prompt('请输入这个人的名字（或昵称）：')
-    if (!name?.trim()) return
-    const persona = await createPersona(name.trim())
-    navigate(`/persona/${persona.id}`)
   }
 
   const handleCreateMock = async () => {
@@ -50,8 +45,11 @@ export default function HomePage() {
       </header>
 
       <div className="flex justify-center mb-4 gap-4">
-        <button onClick={handleCreate} className="btn-primary text-lg px-8 py-4">
+        <button onClick={() => navigate('/create')} className="btn-primary text-lg px-8 py-4">
           + 蒸馏一个人
+        </button>
+        <button onClick={() => setShowImport(true)} className="btn-secondary text-lg px-8 py-4">
+          导入 Skill
         </button>
         <button onClick={() => navigate('/settings')} className="btn-secondary text-lg px-8 py-4">
           设置 API
@@ -127,8 +125,10 @@ export default function HomePage() {
       )}
 
       <footer className="text-center text-xs text-gray-300 mt-16">
-        StayWithMeForever — 本地优先，数据仅存储在你的浏览器中
+        StayWithMeForever — 本地优先，数据存储在项目 data/ 文件夹中
       </footer>
+
+      {showImport && <ImportSkillModal onClose={() => setShowImport(false)} />}
     </div>
   )
 }
