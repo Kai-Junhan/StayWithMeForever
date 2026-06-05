@@ -189,3 +189,83 @@ Use the mental models and decision heuristics when appropriate.
 Maintain the expression DNA style at all times.
 Your responses should be in Chinese unless the user explicitly uses another language.`
 }
+
+export function buildChatAnalyzerPrompt(chatText: string, personName: string): string {
+  return `You are a cognitive scientist and personality analyst specializing in conversational data.
+
+Below is the chat history of a person named "${personName}". The chat data includes their messages in chronological order, with timestamps and sender labels. Non-text messages (images, voice, system messages) are preserved as labels like [图片], [语音], [红包], etc.
+
+Your task: analyze this person's chat messages and extract a structured personality profile in JSON format.
+
+CHAT DATA:
+${chatText}
+
+EXTRACTION GUIDELINES:
+
+1. EXPRESSION DNA - Analyze their writing style from the chat:
+   - Sentence length and complexity (short/direct vs long/elaborate)
+   - Use of emoji, punctuation, and formatting patterns
+   - Common phrases, filler words, unique expressions
+   - Humor style (sarcasm, self-deprecation, absurdity, dry, none)
+   - How they express emotions (direct, indirect, action-based, avoidant)
+   - Response cadence implied by message length and frequency
+
+2. EMOTIONAL PATTERNS - From how they handle different situations:
+   - How they comfort others (practical advice vs emotional support vs distraction)
+   - How they express disagreement or anger
+   - How they apologize or admit mistakes
+   - How they show care or affection
+
+3. COGNITIVE STYLE - From their arguments and explanations:
+   - Do they use logic/facts, personal experience, or intuition?
+   - Abstract vs concrete thinking preference
+   - Do they ask questions or make statements more often?
+   - How do they explain complex topics?
+
+4. VALUES & BELIEFS - From topic discussions:
+   - What topics do they engage with passionately?
+   - What do they criticize or reject?
+   - Priority patterns (freedom, security, growth, relationships, fairness)
+
+5. DECISION HEURISTICS - From examples of decisions in chat:
+   - How they weigh options
+   - What factors they prioritize
+
+OUTPUT FORMAT (valid JSON only, no markdown):
+
+{
+  "mentalModels": [
+    { "name": "...", "summary": "...", "evidence": ["..."], "application": "...", "limitation": "..." }
+  ],
+  "decisionHeuristics": [
+    { "name": "...", "description": "If X, then Y", "scenarios": ["..."], "example": "..." }
+  ],
+  "expressionDNA": {
+    "sentenceStyle": "...",
+    "vocabularyPatterns": ["..."],
+    "humorStyle": "...",
+    "emotionExpression": "...",
+    "certaintyLevel": "...",
+    "quotingHabit": "..."
+  },
+  "values": {
+    "priorities": ["..."],
+    "antiPatterns": ["..."],
+    "tensions": ["..."]
+  },
+  "honestBoundaries": [
+    "Based on chat data only, observed across N conversations",
+    "May not reflect in-person behavior differences",
+    "Limited to text interactions, voice/video not analyzed"
+  ]
+}
+
+RULES:
+- Generate 3-5 mental models with evidence from chat quotes.
+- Generate 5-8 decision heuristics based on observed patterns.
+- Expression DNA MUST be specific (e.g., "Uses short 1-2 line messages, rarely types paragraphs").
+- Values must be inferred from actual discussion topics, not assumed.
+- Honest boundaries must include chat-data-specific limitations.
+- Output ONLY valid JSON. No markdown, no explanation outside the JSON.
+- If the chat data is insufficient for a category, use empty arrays/strings rather than fabricating.`
+}

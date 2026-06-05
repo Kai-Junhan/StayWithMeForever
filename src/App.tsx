@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import HomePage from '@/pages/HomePage'
 import CreatePage from '@/pages/CreatePage'
+import ChatImportPage from '@/pages/ChatImportPage'
 import QuestionnairePage from '@/pages/QuestionnairePage'
 import PersonaDetailPage from '@/pages/PersonaDetailPage'
 import SkillEditorPage from '@/pages/SkillEditorPage'
@@ -13,6 +14,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/create" element={<CreatePage />} />
+        <Route path="/import-chat" element={<ChatImportPage />} />
         <Route path="/questionnaire/:versionId" element={<QuestionnairePage />} />
         <Route path="/persona/:personaId" element={<PersonaDetailPage />} />
         <Route path="/skill/:versionId" element={<SkillEditorPage />} />

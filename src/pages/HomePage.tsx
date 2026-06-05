@@ -57,6 +57,9 @@ export default function HomePage() {
         <button onClick={() => navigate('/create')} className="btn-primary text-lg px-8 py-4">
           + 蒸馏一个人
         </button>
+        <button onClick={() => navigate('/import-chat')} className="btn-secondary text-lg px-8 py-4">
+          导入聊天记录
+        </button>
         <button onClick={() => setShowImport(true)} className="btn-secondary text-lg px-8 py-4">
           导入 Skill
         </button>
